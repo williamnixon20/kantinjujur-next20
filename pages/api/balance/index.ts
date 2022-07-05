@@ -41,5 +41,7 @@ export default authenticate(async function handler(req: NextApiRequest, res: Nex
             console.log(error)
             res.status(400).json({ error });
         }
-    } 
+    } else {
+        res.status(404).json({ message: "Not Found" });
+    }
 }, ["GET", "POST"]);

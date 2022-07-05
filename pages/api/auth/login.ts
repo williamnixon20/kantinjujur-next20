@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             if (!match) {
                 throw Error("Password invalid!")
             }
-            const secretKey = <string> process.env.secret;
+            const secretKey = <string> process.env.SECRET;
             const token = jwt.sign({ sub: studentId }, secretKey, { expiresIn: '7d' });
             // res.cookies.set("token", token, { httpOnly: true })
             setCookie('token', token, { req, res })
@@ -32,5 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.log(error)
             res.status(400).json({ error: error.message});
         }
-    } 
+    } else {
+        res.status(404).json({ message: "Not Found" });
+    }
 }

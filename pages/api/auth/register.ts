@@ -32,5 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             console.log(error);
             res.status(400).json({ error: error.message });
         }
-    } 
+    } else {
+        res.status(404).json({ message: "Not Found" });
+    }
 }
