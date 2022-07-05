@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import axios from "axios";
 import { Item } from "@prisma/client";
 import React, { useEffect, useState } from "react";
-
+import { NEXT_URL } from "../lib/urlVercel";
 interface props {
     data: Item[];
     message: string;
@@ -25,7 +25,7 @@ const Home = ({ data }: props) => {
             };
             try {
                 const res = await axios.get(
-                    "http://localhost:3000/api/balance",
+                    `${NEXT_URL}/api/balance`,
                     configData
                 );
                 setLoggedIn(true);
@@ -42,7 +42,7 @@ const Home = ({ data }: props) => {
             };
             try {
                 const { data } = await axios.get(
-                    "http://localhost:3000/api/balance",
+                    `${NEXT_URL}/api/balance`,
                     configData
                 );
                 const amount = data.data;
@@ -81,7 +81,7 @@ export default Home;
 
 export async function getServerSideProps() {
     // Fetch data from external API
-    const res = await axios.get(`http://localhost:3000/api/item`);
+    const res = await axios.get(`${NEXT_URL}/api/item`);
     const dataRes = res.data.data;
     // Pass data to the page via props
     return { props: { data: dataRes } };

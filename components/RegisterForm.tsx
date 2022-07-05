@@ -5,6 +5,7 @@ import { Prisma, Item, PrismaClient } from "@prisma/client";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { NEXT_URL } from "../lib/urlVercel";
 
 const validateId = (studentId: number) => {
     let stringId = studentId.toString();
@@ -39,7 +40,7 @@ export default function RegisterForm() {
                 },
             };
             await axios.post(
-                "http://localhost:3000/api/auth/register",
+                `${NEXT_URL}/api/auth/register`,
                 JSON.stringify(data),
                 configData
             );

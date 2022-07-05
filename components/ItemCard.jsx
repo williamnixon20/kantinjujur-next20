@@ -3,6 +3,7 @@ import moment from 'moment'
 import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/router";
+import { NEXT_URL } from "../lib/urlVercel";
 
 const ItemCard = ({item, loggedIn}) => {
     const router = useRouter();
@@ -15,11 +16,8 @@ const ItemCard = ({item, loggedIn}) => {
                 },
                 withCredentials: true,
             };
-            console.log(id);
-            const link = `http://localhost:3000/api/item/${id}`
-            console.log(link)
             await axios.put(
-                `http://localhost:3000/api/item/${id}`,
+                `${NEXT_URL}/api/item/${id}`,
                 JSON.stringify({ isSold: true}),
                 configData
             );

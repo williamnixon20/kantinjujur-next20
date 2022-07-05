@@ -5,6 +5,7 @@ import { Prisma, Item, PrismaClient } from "@prisma/client";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import { NEXT_URL } from "../lib/urlVercel";
 
 export default function ItemForm() {
     const router = useRouter();
@@ -26,7 +27,7 @@ export default function ItemForm() {
             };
             try {
                 const { data } = await axios.get(
-                    "http://localhost:3000/api/balance",
+                    `${NEXT_URL}/api/balance`,
                     configData
                 );
                 const amount = data.data;
@@ -48,7 +49,7 @@ export default function ItemForm() {
             };
             data["amount"] = parseFloat(data["amount"]);
             await axios.post(
-                "http://localhost:3000/api/balance",
+                `${NEXT_URL}/api/balance`,
                 JSON.stringify(data),
                 configData
             );

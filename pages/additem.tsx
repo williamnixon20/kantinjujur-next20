@@ -2,6 +2,7 @@ import { ItemForm } from "../components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { NEXT_URL } from "../lib/urlVercel";
 
 const AddItem = () => {
     const router = useRouter();
@@ -16,7 +17,7 @@ const AddItem = () => {
             };
             try {
                 const res = await axios.get(
-                    "http://localhost:3000/api/balance",
+                    `${NEXT_URL}/api/balance`,
                     configData
                 );
             } catch (err) {
