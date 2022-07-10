@@ -10,7 +10,7 @@ However, the canteen only trusts their own students to use this website. As such
 
 ## Environment
 For simplicity sake, the .env file is uploaded directly rather than being put in this file.
-No more stressful configuration needed! (!Both of these approaches leak the data!)
+No more stressful configuration needed! ( Seeing that both these approaches leak the data, might as well leave the .env file there for you guys XD)
 
 ## Getting Started
 You can run this project on your local host by running
