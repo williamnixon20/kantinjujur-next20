@@ -1,4 +1,4 @@
-#Compfest SEA Task 2
+# Compfest SEA Task 2
 This is the source code for my kantin jujur website. This project is hosted on https://kantinjujur-next20.vercel.app/ 
 Give it a try!
 It's built using Atlas MongoDB as the database, with Prisma as the ORM.
