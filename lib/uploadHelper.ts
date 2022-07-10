@@ -1,9 +1,9 @@
 import AWS from "aws-sdk";
 
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
+const BUCKET_NAME = process.env.BUCKET_NAME_AWS;
 const s3 = new AWS.S3({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.ACCESS_KEY_ID_AWS,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY_AWS,
 });
 
 export default async function upload(imageName: string, base64Image: string) {
