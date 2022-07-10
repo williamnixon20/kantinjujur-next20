@@ -18,16 +18,16 @@ export default async function upload(imageName: string, base64Image: string) {
     };
 
     try {
-        let data = await promiseUpload(params);
+        let data = <any>await promiseUpload(params);
         return data.Location;
-    } catch (err) {
+    } catch (err: any) {
         throw Error(err.message);
     }
 }
 
-function promiseUpload(params) {
+function promiseUpload(params: any) {
     return new Promise(function (resolve, reject) {
-        s3.upload(params, function (err, data) {
+        s3.upload(params, function (err: any, data: any) {
             if (err) {
                 reject(err);
             } else {

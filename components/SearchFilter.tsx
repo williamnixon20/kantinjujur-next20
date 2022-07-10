@@ -7,7 +7,7 @@ const SearchFilter = ({
     sortDate,
     setItems,
     items,
-}) => {
+}: any) => {
     const toggleSortName = () => {
         setSortName(!sortName);
         const sortedName = [...items].sort((a, b) =>

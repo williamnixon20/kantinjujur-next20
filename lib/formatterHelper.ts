@@ -3,7 +3,7 @@ export const formatter = new Intl.NumberFormat("en-US", {
     currency: "IDR",
 });
 
-export const formatToBase64 = (file) => {
+export const formatToBase64 = (file: any) => {
     return new Promise((resolve) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
