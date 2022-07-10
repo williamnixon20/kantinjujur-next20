@@ -7,6 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
 import { formatToBase64 } from "../lib/formatterHelper";
+import { ErrorMessage } from "@hookform/error-message";
 
 export default function ItemForm() {
     const router = useRouter();
@@ -15,7 +16,7 @@ export default function ItemForm() {
         handleSubmit,
         watch,
         formState: { errors },
-    } = useForm();
+    } = useForm({ criteriaMode: "all" });
 
     const create = async (data: any) => {
         try {
@@ -73,7 +74,11 @@ export default function ItemForm() {
                     <div className="relative">
                         <input
                             {...register("name", {
-                                required: true,
+                                required: "Nama barang harus diisi",
+                                minLength: {
+                                    value: 2,
+                                    message: "Ayo lebih deskriptif lagi!",
+                                },
                             })}
                             type="text"
                             name="name"
@@ -83,7 +88,18 @@ export default function ItemForm() {
                                 errors.name && "bg-red-200"
                             }`}
                         />
-                        {errors.name && <>{errors.name.message}</>}
+                        <ErrorMessage
+                            errors={errors}
+                            name="name"
+                            render={({ messages }) =>
+                                messages &&
+                                Object.entries(messages).map(
+                                    ([type, message]) => (
+                                        <p key={type}>{message}</p>
+                                    )
+                                )
+                            }
+                        />
                     </div>
                 </div>
                 <div className="relative">
@@ -92,9 +108,15 @@ export default function ItemForm() {
                         step="0.01"
                         placeholder="Harga Barang"
                         {...register("price", {
-                            required: true,
-                            min: 0,
-                            max: 9999999999,
+                            required: "Harga barang harus diisi",
+                            min: {
+                                value: 0,
+                                message: "Kamu jualan atau bagi-bagi duit?",
+                            },
+                            max: {
+                                value: 9999999999,
+                                message: "Ini kantin bukan tender stadiun!",
+                            },
                         })}
                         name="price"
                         id="price"
@@ -102,43 +124,82 @@ export default function ItemForm() {
                             errors.price && "bg-red-200"
                         }`}
                     />
+                    <ErrorMessage
+                        errors={errors}
+                        name="price"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
+                    />
                 </div>
-                <input
-                    {...register("photoFile", {
-                        required: true,
-                    })}
-                    type="file"
-                    accept="image/*"
-                    placeholder="URL Foto Barang"
-                    name="photoFile"
-                    id="photoFile"
-                    className="hidden"
-                />
-                <label
-                    htmlFor="photoFile"
-                    className={`font-bold w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
-                        errors.photoFile && "bg-red-200"
-                    }`}
-                >
-                    <h1 className="transition duration-500 ease transform hover:-translate-y-1 inline-block bg-gray-600 hover:bg-gray-400 text-sm rounded-md text-white px-3 py-3 cursor-pointer">
-                        {!watch("photoFile") || watch("photoFile").length === 0
-                            ? "Upload foto barangmu!"
-                            : watch("photoFile")[0].name}
-                    </h1>
-                </label>
+                <div className="relative">
+                    <input
+                        {...register("photoFile", {
+                            required: "Photo wajib diupload",
+                        })}
+                        type="file"
+                        accept="image/*"
+                        placeholder="URL Foto Barang"
+                        name="photoFile"
+                        id="photoFile"
+                        className="hidden"
+                    />
+                    <label htmlFor="photoFile">
+                        <h1
+                            className={`${
+                                errors.photoFile
+                                    ? "bg-red-300 hover:bg-red-400 text-gray-500"
+                                    : "bg-gray-600 hover:bg-gray-400 text-white "
+                            } font-bold transition duration-500 ease transform hover:-translate-y-1 inline-block text-sm rounded-md px-3 py-3 cursor-pointer`}
+                        >
+                            {!watch("photoFile") ||
+                            watch("photoFile").length === 0
+                                ? "Upload foto barangmu!"
+                                : watch("photoFile")[0].name}
+                        </h1>
+                    </label>
+                    <ErrorMessage
+                        errors={errors}
+                        name="photoFile"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
+                    />
+                </div>
+                <div className="relative">
+                    <textarea
+                        placeholder="Deskripsikan barangmu!"
+                        {...register("description", {
+                            required: "Deskripsi harus diisi.",
+                            maxLength: {
+                                value: 200,
+                                message: "Gausah panjang-panjang :D",
+                            },
+                        })}
+                        name="description"
+                        id="description"
+                        className={`font-bold block w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
+                            errors.description && "bg-red-200"
+                        }`}
+                    />
+                    <ErrorMessage
+                        errors={errors}
+                        name="description"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
+                    />
+                </div>
 
-                <textarea
-                    placeholder="Deskripsikan barangmu!"
-                    {...register("description", {
-                        required: true,
-                        maxLength: 120,
-                    })}
-                    name="description"
-                    id="description"
-                    className={`font-bold block w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
-                        errors.description && "bg-red-200"
-                    }`}
-                />
                 <motion.button
                     whileHover={{
                         scale: 1.02,

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
 import { formatter } from "../lib/formatterHelper";
+import { ErrorMessage } from "@hookform/error-message";
 
 export default function ItemForm() {
     const router = useRouter();
@@ -15,7 +17,7 @@ export default function ItemForm() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({ criteriaMode: "all" });
 
     useEffect(() => {
         const fetchBalance = async () => {
@@ -87,18 +89,24 @@ export default function ItemForm() {
             </h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="grid grid-cols-1 gap-y-6 shadow-lg p-10 bg-white rounded-lg"
+                className="grid grid-cols-1 shadow-lg p-10 bg-white rounded-lg"
             >
                 <Toaster />
                 <div className="relative">
                     <input
                         type="number"
                         step="0.01"
-                        placeholder="Nominal ( + (deposit) / - (ambil))"
+                        placeholder="Nominal ( > 0 (deposit) / < 0 (ambil))"
                         {...register("amount", {
-                            required: true,
-                            min: -balance,
-                            max: 9999999999,
+                            required: "Wajib diisi",
+                            min: {
+                                value: -balance,
+                                message: "Saldo kantin tidak cukup",
+                            },
+                            max: {
+                                value: 99999999,
+                                message: "Nyetornya banyak amat :(",
+                            },
                         })}
                         name="amount"
                         id="amount"
@@ -107,6 +115,16 @@ export default function ItemForm() {
                         }`}
                     />
                 </div>
+                <ErrorMessage
+                    errors={errors}
+                    name="amount"
+                    render={({ messages }) =>
+                        messages &&
+                        Object.entries(messages).map(([type, message]) => (
+                            <p key={type}>{message}</p>
+                        ))
+                    }
+                />
                 <motion.button
                     whileHover={{
                         scale: 1.02,
@@ -118,7 +136,7 @@ export default function ItemForm() {
                     }}
                     type="submit"
                     value="Submit"
-                    className="w-full justify-center py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-blue-800 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="w-full justify-center mt-5 py-3 px-6 border border-transparent shadow-sm text-base font-medium rounded-md text-white bg-blue-800 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                 >
                     Submit
                 </motion.button>

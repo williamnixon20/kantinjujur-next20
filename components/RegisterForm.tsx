@@ -6,12 +6,13 @@ import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
+import { ErrorMessage } from "@hookform/error-message";
 
 const validateId = (studentId: number) => {
     let stringId = studentId.toString();
 
     if (stringId.length !== 5 || stringId.includes(".")) {
-        return false;
+        return "Id harus numerik dan memiliki 5 digit";
     }
 
     if (
@@ -20,7 +21,7 @@ const validateId = (studentId: number) => {
     ) {
         return true;
     } else {
-        return false;
+        return "Tidak memenuhi syarat!";
     }
 };
 
@@ -30,7 +31,9 @@ export default function RegisterForm() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        criteriaMode: "all",
+    });
 
     const create = async (data: any) => {
         try {
@@ -86,7 +89,7 @@ export default function RegisterForm() {
                     <div className="relative">
                         <input
                             {...register("studentId", {
-                                required: true,
+                                required: "studentId wajib diisi!",
                                 validate: validateId,
                             })}
                             type="number"
@@ -98,13 +101,23 @@ export default function RegisterForm() {
                             }`}
                         />
                     </div>
+                    <ErrorMessage
+                        errors={errors}
+                        name="studentId"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
+                    />
                 </div>
                 <div className="relative">
                     <input
                         type="text"
                         placeholder="Username"
                         {...register("username", {
-                            required: true,
+                            required: "Username wajib diisi!",
                         })}
                         name="username"
                         id="username"
@@ -112,19 +125,39 @@ export default function RegisterForm() {
                             errors.username && "bg-red-200"
                         }`}
                     />
+                    <ErrorMessage
+                        errors={errors}
+                        name="username"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
+                    />
                 </div>
                 <div className="relative">
                     <input
                         type="password"
                         placeholder="Password"
                         {...register("password", {
-                            required: true,
+                            required: "Password wajib diisi!",
                         })}
                         name="password"
                         id="password"
                         className={`font-bold block w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
                             errors.password && "bg-red-200"
                         }`}
+                    />
+                    <ErrorMessage
+                        errors={errors}
+                        name="password"
+                        render={({ messages }) =>
+                            messages &&
+                            Object.entries(messages).map(([type, message]) => (
+                                <p key={type}>{message}</p>
+                            ))
+                        }
                     />
                 </div>
                 <motion.button
