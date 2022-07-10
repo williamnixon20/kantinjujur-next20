@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { prisma } from "../../../lib/prisma";
-import { NextApiRequest, NextApiResponse, NextApiHandler } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { authenticate } from "../../../lib/authHelper";
 import upload from "../../../lib/uploadHelper";
 
@@ -49,7 +48,7 @@ export default authenticate(
 export const config = {
     api: {
         bodyParser: {
-            sizeLimit: "4mb", // Set desired value here
+            sizeLimit: "3mb", // Set desired value here
         },
     },
 };

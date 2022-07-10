@@ -7,23 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
 import { ErrorMessage } from "@hookform/error-message";
-
-const validateId = (studentId: number) => {
-    let stringId = studentId.toString();
-
-    if (stringId.length !== 5 || stringId.includes(".")) {
-        return "Id harus numerik dan memiliki 5 digit";
-    }
-
-    if (
-        Number(stringId[0]) + Number(stringId[1]) + Number(stringId[2]) ===
-        Number(stringId.slice(3))
-    ) {
-        return true;
-    } else {
-        return "Tidak memenuhi syarat!";
-    }
-};
+import { validateId } from "../lib/validateHelper";
 
 export default function RegisterForm() {
     const router = useRouter();

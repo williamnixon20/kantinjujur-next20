@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { authenticate } from "../../../lib/authHelper";
@@ -16,12 +16,10 @@ export default authenticate(
         if (req.method === "GET") {
             try {
                 const accountBalance = await getAggregate();
-                return res
-                    .status(200)
-                    .json({
-                        message: "Successfully fetched",
-                        data: accountBalance.amount,
-                    });
+                return res.status(200).json({
+                    message: "Successfully fetched",
+                    data: accountBalance.amount,
+                });
             } catch (error) {
                 res.status(400).json({ error });
             }

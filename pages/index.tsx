@@ -5,7 +5,6 @@ import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import React, { useEffect, useState } from "react";
 import { NEXT_URL } from "../lib/urlVercel";
-import { motion } from "framer-motion";
 import {
     Header,
     Balance,
@@ -59,8 +58,8 @@ const Home = ({ dataProp, loggedInProp }: HomeProps) => {
         <div className="container mx-auto px-10 mb-8">
             <Head>
                 <title>Kantin Jujur</title>
-                <meta name="description" content="Kantin Jujur Compfest" />
-                <link rel="icon" href="/favicon.ico" />
+                <meta name="description" content="Kantin Jujur" />
+                <link rel="icon" href="/cash.png" />
             </Head>
             <main>
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 grid-flow-row-dense">

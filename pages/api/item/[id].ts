@@ -1,4 +1,3 @@
-import { Prisma, PrismaClient } from "@prisma/client";
 import { prisma } from "../../../lib/prisma";
 import { NextApiRequest, NextApiResponse } from "next";
 import { authenticate } from "../../../lib/authHelper";
@@ -42,5 +41,5 @@ export default authenticate(
             res.status(404).json({ message: "Not Found" });
         }
     },
-    ["PATCH"]
+    ["PUT"]
 );
