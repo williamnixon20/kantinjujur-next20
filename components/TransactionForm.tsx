@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { Prisma, Item, PrismaClient } from "@prisma/client";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
+import { formatter } from "../lib/formatterHelper";
 
 export default function ItemForm() {
     const router = useRouter();
@@ -80,7 +80,10 @@ export default function ItemForm() {
     return (
         <div className="max-w-md mx-auto px-4">
             <h1 className="font-bold text-3xl md:text-4xl text-white tracking-wide mb-10 text-center">
-                Saldo kantin jujur sekarang adalah Rp. {balance}.
+                Saldo kantin jujur sekarang adalah:
+            </h1>
+            <h1 className="font-bold text-3xl md:text-4xl text-white tracking-wide mb-10 text-center">
+                {formatter.format(balance)}
             </h1>
             <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -90,10 +93,12 @@ export default function ItemForm() {
                 <div className="relative">
                     <input
                         type="number"
-                        placeholder="Nominal ( + (ambil) / - (tarik))"
+                        step="0.01"
+                        placeholder="Nominal ( + (deposit) / - (ambil))"
                         {...register("amount", {
                             required: true,
                             min: -balance,
+                            max: 9999999999,
                         })}
                         name="amount"
                         id="amount"

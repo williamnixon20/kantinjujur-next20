@@ -1,17 +1,19 @@
 import React from "react";
 import axios from "axios";
+
 import { useRouter } from "next/router";
-import { Prisma, Item, PrismaClient } from "@prisma/client";
 import { motion } from "framer-motion";
 import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { NEXT_URL } from "../lib/urlVercel";
+import { formatToBase64 } from "../lib/formatterHelper";
 
 export default function ItemForm() {
     const router = useRouter();
     const {
         register,
         handleSubmit,
+        watch,
         formState: { errors },
     } = useForm();
 
@@ -23,6 +25,7 @@ export default function ItemForm() {
                 },
                 withCredentials: true,
             };
+            data["photoFile"] = await formatToBase64(data["photoFile"][0]);
             data["price"] = parseFloat(data["price"]);
             await axios.post(
                 `${NEXT_URL}/api/item`,
@@ -34,7 +37,6 @@ export default function ItemForm() {
         }
     };
     const onSubmit = async (data: any) => {
-        console.log("received!");
         try {
             await toast.promise(
                 create(data),
@@ -81,15 +83,18 @@ export default function ItemForm() {
                                 errors.name && "bg-red-200"
                             }`}
                         />
+                        {errors.name && <>{errors.name.message}</>}
                     </div>
                 </div>
                 <div className="relative">
                     <input
                         type="number"
+                        step="0.01"
                         placeholder="Harga Barang"
                         {...register("price", {
                             required: true,
                             min: 0,
+                            max: 9999999999,
                         })}
                         name="price"
                         id="price"
@@ -99,21 +104,29 @@ export default function ItemForm() {
                     />
                 </div>
                 <input
-                    {...register("photoUrl", {
+                    {...register("photoFile", {
                         required: true,
-                        pattern: {
-                            value: /(([\w]+:)?\/\/)?(([\d\w]|%[a-fA-f\d]{2,2})+(:([\d\w]|%[a-fA-f\d]{2,2})+)?@)?([\d\w][-\d\w]{0,253}[\d\w]\.)+[\w]{2,63}(:[\d]+)?(\/([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)*(\?(&?([-+_~.\d\w]|%[a-fA-f\d]{2,2})=?)*)?(#([-+_~.\d\w]|%[a-fA-f\d]{2,2})*)?/,
-                            message: "Invalid url address",
-                        },
                     })}
-                    type="text"
+                    type="file"
+                    accept="image/*"
                     placeholder="URL Foto Barang"
-                    name="photoUrl"
-                    id="photoUrl"
-                    className={`font-bold block w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
-                        errors.photoUrl && "bg-red-200"
-                    }`}
+                    name="photoFile"
+                    id="photoFile"
+                    className="hidden"
                 />
+                <label
+                    htmlFor="photoFile"
+                    className={`font-bold w-full shadow-sm py-3 px-4 mb-2 placeholder-gray-500 rounded-md ${
+                        errors.photoFile && "bg-red-200"
+                    }`}
+                >
+                    <h1 className="transition duration-500 ease transform hover:-translate-y-1 inline-block bg-gray-600 hover:bg-gray-400 text-sm rounded-md text-white px-3 py-3 cursor-pointer">
+                        {!watch("photoFile") || watch("photoFile").length === 0
+                            ? "Upload foto barangmu!"
+                            : watch("photoFile")[0].name}
+                    </h1>
+                </label>
+
                 <textarea
                     placeholder="Deskripsikan barangmu!"
                     {...register("description", {

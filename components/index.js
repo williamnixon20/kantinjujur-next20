@@ -6,3 +6,4 @@ export { default as LoginForm } from "./LoginForm";
 export { default as RegisterForm } from "./RegisterForm";
 export { default as TransactionForm } from "./TransactionForm";
 export { default as AddItem } from "./AddItem";
+export { default as SearchFilter } from "./SearchFilter";
